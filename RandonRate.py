@@ -1,3 +1,4 @@
+import os
 import time
 import json
 import boto3
@@ -6,6 +7,7 @@ import string
 import threading
 import paho.mqtt.client as mqtt
 from datetime import datetime
+from dotenv import load_dotenv
 
 
 categories = [
@@ -20,11 +22,14 @@ third_list = [
     "location", "updates", "humidity", "motion", "status", "battery", 
     "speed", "forecast", "fire", "growth", "market", "exercise", "surveillance"
 ]
-session = boto3.Session(
-    aws_access_key_id="REDACTED",
-    aws_secret_access_key="REDACTED",
-    region_name="eu-north-1"
-)
+
+load_dotenv()
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_REGION = os.getenv("AWS_REGION")
+TLS_ROOT_CA = os.getenv("TLS_ROOT_CA")
+TLS_CERTIFICATE = os.getenv("TLS_CERTIFICATE")
+TLS_PRIVATE_KEY = os.getenv("TLS_PRIVATE_KEY")
 
 MQTT_BROKER = 'a32oq24wrmpa9s-ats.iot.eu-north-1.amazonaws.com'
 MQTT_PORT = 8883 
@@ -34,6 +39,12 @@ TIMEOUT = 4
 DISCONNECT_INTERVAL = 180  # (3 minutes)
 
 topics = [f"{random.choice(categories)}/{random.choice(subcategories)}/{random.choice(third_list)}" for _ in range(NUM_PACKETS)]
+
+session = boto3.Session(
+    aws_access_key_id=AWS_ACCESS_KEY_ID,
+    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+    region_name=AWS_REGION
+)
 
 dynamodb = session.resource("dynamodb")
 table = dynamodb.Table('MQTT_Events')
@@ -189,9 +200,7 @@ def store_event(payload):
 
 
 client = mqtt.Client()
-client.tls_set("AmazonRootCA1.pem", 
-            certfile="b8aa6d72d0d0ceda99fd98e3582432d7431e7e7785f75d9dd139df2cd40d41e0-certificate.pem.crt", 
-            keyfile="b8aa6d72d0d0ceda99fd98e3582432d7431e7e7785f75d9dd139df2cd40d41e0-private.pem.key")
+client.tls_set(TLS_ROOT_CA, certfile=TLS_CERTIFICATE, keyfile=TLS_PRIVATE_KEY)
 
 client.on_connect = on_connect
 client.on_message = on_message
