@@ -23,30 +23,7 @@ third_list = [
     "speed", "forecast", "fire", "growth", "market", "exercise", "surveillance"
 ]
 
-load_dotenv()
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-AWS_REGION = os.getenv("AWS_REGION")
-TLS_ROOT_CA = os.getenv("TLS_ROOT_CA")
-TLS_CERTIFICATE = os.getenv("TLS_CERTIFICATE")
-TLS_PRIVATE_KEY = os.getenv("TLS_PRIVATE_KEY")
 
-
-# MQTT_BROKER = 'a32oq24wrmpa9s-ats.iot.eu-north-1.amazonaws.com'
-MQTT_BROKER = os.getenv("MQTT_BROKER")
-MQTT_PORT = 8883 
-CLIENT_ID = f"Client{random.choice(string.ascii_uppercase)}{random.randint(1, 9)}"
-NUM_PACKETS = int(input('Enter number of packets '))
-TIMEOUT = 4 
-DISCONNECT_INTERVAL = 180  # (3 minutes)
-
-topics = [f"{random.choice(categories)}/{random.choice(subcategories)}/{random.choice(third_list)}" for _ in range(NUM_PACKETS)]
-
-session = boto3.Session(
-    aws_access_key_id=AWS_ACCESS_KEY_ID,
-    aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-    region_name=AWS_REGION
-)
 
 dynamodb = session.resource("dynamodb")
 table = dynamodb.Table('MQTT_Events')
