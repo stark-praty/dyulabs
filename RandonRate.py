@@ -181,7 +181,6 @@ def store_event(payload):
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.tls_set(TLS_ROOT_CA, certfile=TLS_CERTIFICATE, keyfile=TLS_PRIVATE_KEY)
 
 client.on_disconnect = on_disconnect
 
