@@ -31,7 +31,9 @@ TLS_ROOT_CA = os.getenv("TLS_ROOT_CA")
 TLS_CERTIFICATE = os.getenv("TLS_CERTIFICATE")
 TLS_PRIVATE_KEY = os.getenv("TLS_PRIVATE_KEY")
 
-MQTT_BROKER = 'a32oq24wrmpa9s-ats.iot.eu-north-1.amazonaws.com'
+
+# MQTT_BROKER = 'a32oq24wrmpa9s-ats.iot.eu-north-1.amazonaws.com'
+MQTT_BROKER = os.getenv("MQTT_BROKER")
 MQTT_PORT = 8883 
 CLIENT_ID = f"Client{random.choice(string.ascii_uppercase)}{random.randint(1, 9)}"
 NUM_PACKETS = int(input('Enter number of packets '))
@@ -200,17 +202,15 @@ def store_event(payload):
 
 
 client = mqtt.Client()
-client.tls_set(TLS_ROOT_CA, certfile=TLS_CERTIFICATE, keyfile=TLS_PRIVATE_KEY)
-
 client.on_connect = on_connect
 client.on_message = on_message
+client.tls_set(TLS_ROOT_CA, certfile=TLS_CERTIFICATE, keyfile=TLS_PRIVATE_KEY)
+
 client.on_disconnect = on_disconnect
 
 print('entry')
 client.connect(MQTT_BROKER, MQTT_PORT, 60)
 client.loop_start()
-
-
 
 time.sleep(4)
 try:
