@@ -75,7 +75,7 @@ h2, h3 {
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-/* Error message style */
+
 .error-message {
     color: #d32f2f;
     background-color: #ffebee;
@@ -85,7 +85,7 @@ h2, h3 {
     border-left: 4px solid #d32f2f;
 }
 
-/* Success message style */
+
 .success-message {
     color: #388e3c;
     background-color: #e8f5e9;
