@@ -1,6 +1,6 @@
 /.vscode
 /inter-env
-
+/.env
 AmazonRootCA1.pem
 AmazonRootCA3.pem
 b8aa6d72d0d0ceda99fd98e3582432d7431e7e7785f75d9dd139df2cd40d41e0-certificate.pem.crt 
