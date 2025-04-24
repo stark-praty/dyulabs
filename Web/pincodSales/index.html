@@ -10,14 +10,64 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     <script src="config.js"></script>
     <script src="app.js"></script>
+    <style>
+        .map-legend {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: white;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 1000; /* Ensure it's above map controls */
+            font-size: 14px;
+        }
+
+        .map-legend h4 {
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+
+        .legend-color-box {
+            width: 15px;
+            height: 15px;
+            margin-right: 5px;
+            border: 1px solid #000;
+        }
+    </style>
 </head>
 <body>
     <div id="header">
         <h1>Device Sales Map - India</h1>
     </div>
-    
+
     <div class="container">
-        <div id="map"></div>
+        <div id="map">
+            <div class="map-legend">
+                <h4>Legend</h4>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background-color: #4285F4;"></div>
+                    <span>Smartphone</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background-color: #EA4335;"></div>
+                    <span>Tablet</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color-box" style="background-color: #34A853;"></div>
+                    <span>Laptop</span>
+                </div>
+                <div class="legend-item">
+                    <span>Marker size = Quantity sold</span>
+                </div>
+            </div>
+        </div>
 
         <div id="sidebar">
             <div class="stats-box">
@@ -26,7 +76,7 @@
                 <p><strong>Locations Covered:</strong> <span id="total-locations">0</span></p>
                 <p><strong>States Reached:</strong> <span id="total-states">0</span></p>
             </div>
-            
+
             <div class="stats-box">
                 <h3>Device Types</h3>
                 <div id="device-stats"></div>
@@ -35,9 +85,8 @@
                 <h3>Top 5 Cities</h3>
                 <div id="city-stats"></div>
             </div>
-            
-            <div class="legend">
-                <h3>Legend</h3>
+
+            <!-- <div class="legend" style="display: none;"> <h3>Legend</h3>
                 <div class="legend-item">
                     <span>Marker size indicates quantity sold</span>
                 </div>
@@ -53,13 +102,13 @@
                     <span class="legend-color" style="background-color: #34A853;"></span>
                     <span>Laptop</span>
                 </div>
-                
-            </div>
+
+            </div> -->
         </div>
     </div>
     <div id="loader" class="loader">
         <p>Loading sales data...</p>
     </div>
-    
+
 </body>
 </html>
