@@ -2,10 +2,6 @@
 let map;
 let salesData = [];
 
-// const MY_MAPSCO_API_KEY = '67ff83f3367a8312182683riu4d5cac';
-// const OLA_API = '4xA6vZJwhWCJOnTtUXwWlzcbdZG7RGgyIrsRvE36'
-// const OLA_BEARER_TOKEN = 'eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJMRndtX0U2akoyWG5yYkpkS1d1VXl2UllUN25lZ0FibDhWLXVSTno3UzZVIn0.eyJleHAiOjE3NDU0ODQ5MTgsImlhdCI6MTc0NTQ4MTMxOCwianRpIjoiMzA4NDgxODgtZTg1OS00MGEzLWFhNTMtM2VlOWZhZjAwMzUzIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50Lm9sYW1hcHMuaW8vcmVhbG1zL29sYW1hcHMiLCJzdWIiOiJhMmRlOWIxOC1iNzU5LTRlZWUtYmE0Zi0yYzFhMWI2MWRjZjUiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiI5MGJlMzQ2My02YzRiLTQ0NWYtYWM3NS0zZGMzYTE1ZjU0NDIiLCJzY29wZSI6IiIsImNsaWVudEhvc3QiOm51bGwsIm9yZyI6Ik9SRy0wOGYwNTQ3Ny02YWU4LTRmYjEtYjZlMi1lZWE0MjliYzNlN2MiLCJvcmcxIjp7fSwicmVhbG0iOiJvbGFtYXBzIiwiY2xpZW50QWRkcmVzcyI6bnVsbCwiY2xpZW50X2lkIjoiOTBiZTM0NjMtNmM0Yi00NDVmLWFjNzUtM2RjM2ExNWY1NDQyIiwic2JuIjoiU0JOLWEyNmQ2YjExLTVhZjgtNDIyMS05YjRiLTY3ZmVlZjJlZWRjOCJ9.nov3h8n8Le79BSZcn3c5w5dKuM0vZlw6hNDD2DSWB2oOGGgWoKLbAayIHSjZQCZqmLAGMRzYi8AUXjf-PEZ_e9fYqprrobU0KPvapgq6UeGjEWuUp0bRcZl_sN6fTwe0TOlxy1B0d2B4_5uivwcmJBhtYUWJgmeHbRujeKb1h-qjwrwI-zBQ_wDJ6Cj7acZ9HFwddGFcltqA1-5e3kvFqV_5GnEEZJKifK0DfbxEvlL_QCUr9fjK45L5LByoClR-VfE1juGCEqes6vwAJzbdcr3IaW6dcafX3ojNgQkkOZz4kaaJdTlBmT6SgH2-r1g3ihLDnZc21NL7fJ5kmIgm-g'
-
 // Device colors mapping
 const deviceColors = {
     'Smartphone': '#4285F4',  // Blue
@@ -72,7 +68,7 @@ async function processSalesData() {
         // Count devices by type
         deviceCounts[item.device_type] = (deviceCounts[item.device_type] || 0) + quantity;
         // Count sales by city
-        citySales[item.city] = (citySales[item.city] || 0) + quantity;
+        citySales[`${item.city},${item.state}`] = (citySales[`${item.city},${item.state}`] || 0) + quantity;
         try {
             const coords = await fetchCoordinates(item.pincode);
             if (coords) {
@@ -91,34 +87,6 @@ async function processSalesData() {
     // Hide loader
     document.getElementById('loader').style.display = 'none';
 }
-
-// async function fetchCoordinates(pincode) {
-    
-//     const apiUrl = `https://api.postalpincode.in/pincode/${pincode}`;
-    
-//     try {
-//         const response = await fetch(apiUrl);
-//         if (!response.ok) {
-//             throw new Error(`API request failed with status ${response.status}`);
-//         }
-        
-//         const data = await response.json();
-        
-//         // Process the API response - this structure will depend on the API you're using
-//         if (data && data[0] && data[0].Status === 'Success' && data[0].PostOffice && data[0].PostOffice.length > 0) {
-
-//             return {
-//                 latitude: 28.6139 + (Math.random() - 0.5) * 2,  // Random offset around Delhi
-//                 longitude: 77.2090 + (Math.random() - 0.5) * 2
-//             };
-//         } else {
-//             throw new Error('No location data found for this pincode');
-//         }
-//     } catch (error) {
-//         console.error(`Error fetching coordinates for pincode ${pincode}:`, error);
-//         throw error;
-//     }
-// }
 
 async function fetchCoordinates(pincode) {
     const apiUrl = `https://api.olamaps.io/places/v1/geocode?address=${pincode}&language=English&api_key=${OLA_API}`;
